@@ -15,8 +15,8 @@ def empty():
     pass
 
 def dist(x1,y1,x2,y2):
-    add1 = pow(x1 + x2,2)
-    add2 = pow(y1+y2,2)
+    add1 = pow(x1 - x2,2)
+    add2 = pow(y1 - y2,2)
     add3 = add1 + add2
     return math.sqrt(add3)
 
