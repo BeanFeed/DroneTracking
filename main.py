@@ -1,6 +1,6 @@
 from djitellopy import Tello
 import numpy as np
-
+import math
 import cv2
 
 drone = Tello()
@@ -13,6 +13,12 @@ upper = np.array([179,255,255])
 
 def empty():
     pass
+
+def dist(x1,y1,x2,y2):
+    add1 = pow(x1 + x2,2)
+    add2 = pow(y1+y2,2)
+    add3 = add1 + add2
+    return math.sqrt(add3)
 
 cv2.namedWindow("HSV")
 cv2.resizeWindow("HSV",640,240)
@@ -48,8 +54,11 @@ while True:
             if cv2.contourArea(c) > 500:
                 x,y,w,h = cv2.boundingRect(c)
                 cv2.rectangle(img,(x,y),(x+w, y+h), (0,255,0),1)
+                cv2.circle(img, (x+w,y),20, (0,255,0), 5)
 
     cv2.imshow("mask",mask)
     cv2.imshow("cam",img)
 
     cv2.waitKey(1)
+
+    print(dist(x,y,x+w,y))
