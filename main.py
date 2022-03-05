@@ -1,4 +1,4 @@
-#from djitellopy import Tello
+from djitellopy import Tello
 import numpy as np
 import math
 import cv2
@@ -18,6 +18,7 @@ h = 0
 
 vel = 20
 
+screenCenter = [320,240]
 boxW = 213
 boxH = 160
 
@@ -54,9 +55,9 @@ def getBox():
 
 def droneHandler(dist):
     droneVel = [0,0,0,0]
-    if(dist >= 180):
+    if(dist[0] >= 180 and dist[1] >= 180):
         droneVel[1] = -vel
-    elif(dist <= 80):
+    elif(dist[0] <= 80 and dist[1] <= 80):
         droneVel[1] = vel
     gb = getBox()
     #print(str(gb))
@@ -144,7 +145,7 @@ def video():
             for c in contours:
                 if cv2.contourArea(c) > 500:
                     x,y,w,h = cv2.boundingRect(c)
-                    cv2.rectangle(img,(x,y),(x+w, y+h), (0,255,0),1)
+                    cv2.rectangle(img,(x,y),(x+w, y+h), (0,0,255),1)
                     newX = w / 2
                     newX = x + newX
                     newX = int(newX)
@@ -154,14 +155,17 @@ def video():
                     
                     center = [newX,newY]
 
-                    cv2.circle(img, center,5, (0,255,0), -1)
-                    droneHandler(dist(x,y,x+w,y))
+                    cv2.circle(img, center,5, (0,0,255), -1)
+                    cv2.circle(img, screenCenter,5,(0,0,255),-1)
+                    cv2.line(img,center,screenCenter,(0,0,255),1)
+
+                    droneHandler([dist(x,y,x+w,y),dist(x,y,x,y+h)])
                     
 
-        cv2.line(img, [213 ,0],[213,480], (0,255,0),2)
-        cv2.line(img,[426,0],[426,480],(0,255,0),2)
-        cv2.line(img,[0,160],[640,160],(0,255,0),2)
-        cv2.line(img,[0,320],[640,320],(0,255,0),2)
+        cv2.line(img, [213 ,0],[213,480], (0,255,0),1)
+        cv2.line(img,[426,0],[426,480],(0,255,0),1)
+        cv2.line(img,[0,160],[640,160],(0,255,0),1)
+        cv2.line(img,[0,320],[640,320],(0,255,0),1)
         cv2.imshow("mask",mask)
         cv2.imshow("cam",img)
         
