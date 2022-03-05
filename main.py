@@ -9,6 +9,7 @@ using_drone = False
 if(using_drone):
     drone = Tello()
     drone.connect()
+    drone.takeoff()
     drone.streamon()
 
 x = 0
