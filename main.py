@@ -98,10 +98,12 @@ def dist(x1,y1,x2,y2):
     add2 = pow(y1 - y2,2)
     add3 = add1 + add2
     return math.sqrt(add3)
-
-cap = cv2.VideoCapture(0)
-cap.set(3,640)
-cap.set(4,480)
+if (using_drone):
+    cap = drone.get_frame_read().frame
+else:
+    cap = cv2.VideoCapture(0)
+    cap.set(3,640)
+    cap.set(4,480)
 
 
 cv2.namedWindow("HSV")
